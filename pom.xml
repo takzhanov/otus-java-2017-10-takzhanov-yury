@@ -8,6 +8,7 @@
     <artifactId>otus-umbrella-project</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <description></description>
 
     <developers>
         <developer>
