@@ -11,10 +11,6 @@
 
     <artifactId>hw01-assembly</artifactId>
 
-    <properties>
-        <com.google.guava.version>23.0</com.google.guava.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.slf4j</groupId>
