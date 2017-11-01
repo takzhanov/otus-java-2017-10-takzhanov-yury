@@ -13,3 +13,7 @@ takzhanov@restream.rt.ru
 ---
 
 [Примеры для курса](https://github.com/vitaly-chibrikov/otus_java_2017_10)
+
+---
+
+[Ссылка на этот репозиторий](https://github.com/takzhanov/otus-java-2017-10-takzhanov-yury)
