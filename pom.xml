@@ -19,6 +19,7 @@
     <modules>
         <module>hw01-assembly</module>
         <module>hw02-sizeof</module>
+        <module>hw03-mystruct</module>
     </modules>
 
     <properties>
