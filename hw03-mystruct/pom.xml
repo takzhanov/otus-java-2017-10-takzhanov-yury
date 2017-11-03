@@ -34,7 +34,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>io.github.takzhanov.umbrella.hw01.Main</mainClass>
+                            <mainClass>io.github.takzhanov.umbrella.hw03.Demo</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
