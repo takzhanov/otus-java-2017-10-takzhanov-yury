@@ -7,6 +7,7 @@ import static io.github.takzhanov.umbrella.hw02.ObjectSizeAnalyzer.getDeepObject
 import static io.github.takzhanov.umbrella.hw02.ObjectSizeAnalyzer.getObjectSize;
 
 //тесты работают только с агентом в опциях
+//-javaagent:target/hw02-sizeof.jar
 public class ObjectSizeAnalyzerTest {
     @Test
     public void sizeOfNull() {
