@@ -53,6 +53,9 @@ public class MyArrayListTest {
     public void remove() throws Exception {
         assertFalse(MyArrayList.of(1, 2, 3).remove((Integer) 0));
         assertTrue(MyArrayList.of(1, 2, 3).remove((Integer) 1));
+        assertTrue(MyArrayList.of(1, 2, 3).remove((Integer) 3));
+        assertTrue(MyArrayList.of(1, 2, 3).remove((Integer) 2));
+        assertFalse(MyArrayList.of(1, 2, 3).remove(null));
     }
 
     @Test

@@ -82,6 +82,25 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean remove(Object o) {
+        if (null == o) {
+            return false;
+        }
+        int index = -1;
+        for (int i = 0; i < size; i++) {
+            if (o.equals(items[i])) {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1) {
+            T[] newItems = (T[]) new Object[items.length - 1];
+            System.arraycopy(items, 0, newItems, 0, index);
+            if (index < items.length) {
+                System.arraycopy(items, index + 1, newItems, index, items.length - 1 - index);
+            }
+            items = newItems;
+            return true;
+        }
         return false;
     }
 
