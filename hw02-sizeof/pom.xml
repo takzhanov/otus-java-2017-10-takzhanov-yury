@@ -12,6 +12,11 @@
 
     <artifactId>hw02-sizeof</artifactId>
 
+    <properties>
+        <!--игнорим тесты для простоты, т.к. они могут работать только с агентом-->
+        <maven.test.skip>true</maven.test.skip>
+    </properties>
+
     <build>
         <finalName>${project.name}</finalName>
         <plugins>
