@@ -8,7 +8,6 @@
     <artifactId>otus-umbrella-project</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-    <description></description>
 
     <developers>
         <developer>
@@ -20,6 +19,9 @@
         <module>hw01-assembly</module>
         <module>hw02-sizeof</module>
         <module>hw03-mystruct</module>
+        <module>hw04-memory-leak</module>
+        <module>hw05-test-framework</module>
+        <module>hw06-atm-emulator</module>
     </modules>
 
     <properties>
@@ -33,6 +35,11 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.25</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>15.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
