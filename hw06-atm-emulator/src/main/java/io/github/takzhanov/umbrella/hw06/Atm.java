@@ -10,4 +10,6 @@ public interface Atm {
     Map<Banknote, Integer> getMoney(Integer sum);
 
     Integer getAtmBalance();
+
+    void reset();
 }

@@ -9,6 +9,14 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>hw06-atm-emulator</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>io.github.takzhanov</groupId>
+            <artifactId>hw06-atm-emulator</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <artifactId>hw07-atm-department</artifactId>
 
 </project>

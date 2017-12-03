@@ -1,6 +1,7 @@
 package io.github.takzhanov.umbrella.hw06;
 
 import org.jetbrains.annotations.NotNull;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,6 +57,11 @@ public class AtmEmulator implements Atm {
         return balance;
     }
 
+    @Override
+    public void reset() {
+        throw new NotImplementedException();
+    }
+
     private static int[] findCombination(int[] nominals, int[] srcComb, int[] outComb, int targetSum, int nextNominal) {
         if (targetSum == 0) {
             return outComb;
@@ -85,7 +91,8 @@ public class AtmEmulator implements Atm {
     private static int calculateSum(@NotNull Map<Banknote, Integer> cassettes) {
         return cassettes.entrySet().stream()
                 .map(banknoteIntegerEntry -> banknoteIntegerEntry.getKey().nominal * banknoteIntegerEntry.getValue())
-                .mapToInt(Integer::intValue).sum();
+                .mapToInt(Integer::intValue)
+                .sum();
     }
 
 }
