@@ -5,7 +5,7 @@ import io.github.takzhanov.umbrella.hw06.Atm;
 public interface AtmDepartment {
     void addAtm(Atm atm);
 
-    void resetDepartments();
+    void resetAllAtms();
 
     Integer getDepartmentBalance();
 }

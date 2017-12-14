@@ -15,7 +15,7 @@ public class AtmDepartmentEmulator implements AtmDepartment {
     }
 
     @Override
-    public void resetDepartments() {
+    public void resetAllAtms() {
         atms.forEach(Atm::reset);
     }
 

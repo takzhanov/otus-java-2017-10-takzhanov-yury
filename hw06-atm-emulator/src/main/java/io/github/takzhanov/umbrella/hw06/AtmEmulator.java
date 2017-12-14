@@ -1,16 +1,26 @@
 package io.github.takzhanov.umbrella.hw06;
 
 import org.jetbrains.annotations.NotNull;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import static java.lang.Math.min;
 
 public class AtmEmulator implements Atm {
-    private Map<Banknote, Integer> cassettes = new HashMap<>();
+    private final Map<Banknote, Integer> initialState;
+    private final Map<Banknote, Integer> cassettes = new HashMap<>();
     private int balance = 0;
+
+    public AtmEmulator() {
+        initialState = Collections.emptyMap();
+    }
+
+    public AtmEmulator(Map<Banknote, Integer> cassettes) {
+        loadMoney(cassettes);
+        initialState = new HashMap<>(cassettes);
+    }
 
     @Override
     public int loadMoney(@NotNull Map<Banknote, Integer> newCassettes) {
@@ -27,6 +37,7 @@ public class AtmEmulator implements Atm {
 
     @Override
     public Map<Banknote, Integer> getMoney(Integer sum) {
+        Integer prevBalance = balance;
         if (sum > balance) {
             throw new TooMuchMoneyException("Requested too much money");
         }
@@ -48,6 +59,9 @@ public class AtmEmulator implements Atm {
             balance -= curBanknote.nominal * curCount;
             result.put(curBanknote, curCount);
         }
+        if (prevBalance - balance != sum) {
+            throw new RuntimeException("GetMoneyAlgorithmException");
+        }
         return result;
     }
 
@@ -59,7 +73,9 @@ public class AtmEmulator implements Atm {
 
     @Override
     public void reset() {
-        throw new NotImplementedException();
+        cassettes.clear();
+        cassettes.putAll(initialState);
+        balance = calculateSum(cassettes);
     }
 
     private static int[] findCombination(int[] nominals, int[] srcComb, int[] outComb, int targetSum, int nextNominal) {
