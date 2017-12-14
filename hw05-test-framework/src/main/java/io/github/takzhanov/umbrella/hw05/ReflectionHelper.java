@@ -7,17 +7,13 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
-/**
- * Created by tully.
- */
-@SuppressWarnings("SameParameterValue")
-class ReflectionHelper {
+
+public class ReflectionHelper {
     private ReflectionHelper() {
     }
 
-    static <T> T instantiate(Class<T> type, Object... args) {
+    public static <T> T instantiate(Class<T> type, Object... args) {
         try {
             if (args.length == 0) {
                 return type.newInstance();
@@ -30,7 +26,7 @@ class ReflectionHelper {
         return null;
     }
 
-    static Object getFieldValue(Object object, String name) {
+    public static Object getFieldValue(Object object, String name) {
         Field field = null;
         boolean isAccessible = true;
         try {
@@ -48,7 +44,7 @@ class ReflectionHelper {
         return null;
     }
 
-    static void setFieldValue(Object object, String name, Object value) {
+    public static void setFieldValue(Object object, String name, Object value) {
         Field field = null;
         boolean isAccessible = true;
         try {
@@ -95,10 +91,7 @@ class ReflectionHelper {
         return methods;
     }
 
-    static private Class<?>[] toClasses(Object[] args) {
-        List<Class<?>> classes = Arrays.stream(args)
-                .map(Object::getClass)
-                .collect(Collectors.toList());
-        return classes.toArray(new Class<?>[classes.size()]);
+    private static Class<?>[] toClasses(Object[] args) {
+        return Arrays.stream(args).map(Object::getClass).toArray(Class<?>[]::new);
     }
 }

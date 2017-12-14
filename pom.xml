@@ -23,6 +23,7 @@
         <module>hw05-test-framework</module>
         <module>hw06-atm-emulator</module>
         <module>hw07-atm-department</module>
+        <module>hw08-json-writer</module>
     </modules>
 
     <properties>

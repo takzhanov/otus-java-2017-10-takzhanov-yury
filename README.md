@@ -1,4 +1,4 @@
-# Домашние задания для [курса "Разработчик Java"](https://otus.ru/lessons/razrabotchik-java/)  в [Otus.ru](https://otus.ru/)
+# Домашние задания для [курса "Разработчик Java"](https://otus.ru/lessons/razrabotchik-java/) в [Otus.ru](https://otus.ru/)
 
 Группа 2017-10
 
