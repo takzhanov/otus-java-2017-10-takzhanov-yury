@@ -1,6 +1,9 @@
 package io.github.takzhanov.umbrella.hw05;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -16,7 +19,15 @@ public class ReflectionHelper {
     public static <T> T instantiate(Class<T> type, Object... args) {
         try {
             if (args.length == 0) {
-                return type.newInstance();
+                Constructor<T> declaredConstructor = type.getDeclaredConstructor();
+                if (!declaredConstructor.canAccess(null)) {
+                    declaredConstructor.setAccessible(true);
+                    T o = declaredConstructor.newInstance();
+                    declaredConstructor.setAccessible(false);
+                    return o;
+                } else {
+                    return declaredConstructor.newInstance();
+                }
             } else {
                 return type.getConstructor(toClasses(args)).newInstance(args);
             }
@@ -27,17 +38,24 @@ public class ReflectionHelper {
     }
 
     public static Object getFieldValue(Object object, String name) {
-        Field field = null;
-        boolean isAccessible = true;
         try {
-            field = object.getClass().getDeclaredField(name); //getField() for public fields
-            isAccessible = field.isAccessible();
+            Field field = object.getClass().getDeclaredField(name); //getField() for public fields
+            getFieldValue(field, object);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Object getFieldValue(@NotNull Field field, Object object) {
+        boolean isAccessible = field.canAccess(object);
+        try {
             field.setAccessible(true);
             return field.get(object);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         } finally {
-            if (field != null && !isAccessible) {
+            if (!isAccessible) {
                 field.setAccessible(false);
             }
         }
