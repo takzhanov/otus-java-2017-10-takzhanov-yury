@@ -34,7 +34,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>io.github.takzhanov.umbrella.hw04.Demo</mainClass>
+                            <mainClass>io.github.takzhanov.umbrella.hw04.MemoryLeakSimulator</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
