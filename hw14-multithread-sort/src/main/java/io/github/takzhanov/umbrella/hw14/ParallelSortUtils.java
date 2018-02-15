@@ -1,10 +1,15 @@
 package io.github.takzhanov.umbrella.hw14;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class ParallelSortUtils {
 
-    public static <T extends Comparable<T>> void parallelSort(final int nThreads, T[] arr, int l, int r) {
+    public static <T extends Comparable<T>> void parallelSort(final int nThreads, T[] arr) {
+        parallelSort(nThreads, arr, 0, arr.length);
+    }
+
+    static <T extends Comparable<T>> void parallelSort(final int nThreads, T[] arr, int l, int r) {
         if (nThreads > 1) {
             final int k = l + (r - l + 1) / 2;
             Thread t1 = new Thread(() -> parallelSort(nThreads / 2, arr, l, k));
@@ -41,7 +46,7 @@ public class ParallelSortUtils {
         arr[i] = temp;
     }
 
-    public static <T extends Comparable<T>> void mergeSort(T[] arr, int l1, int r2) {
+    static <T extends Comparable<T>> void mergeSort(T[] arr, int l1, int r2) {
         final int l2 = l1 + (r2 - l1 + 1) / 2;
         int j = l2;
         int k = l1;
@@ -63,5 +68,16 @@ public class ParallelSortUtils {
         }
     }
 
+    public static Integer[] generateShuffleArray(int n) {
+        return generateShuffleArray(n, 1000);
+    }
 
+    public static Integer[] generateShuffleArray(int n, int maxBound) {
+        Random random = new Random();
+        Integer[] result = new Integer[n];
+        for (int i = 0; i < n; i++) {
+            result[i] = random.nextInt(maxBound);
+        }
+        return result;
+    }
 }

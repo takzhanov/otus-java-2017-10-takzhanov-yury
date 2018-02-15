@@ -12,6 +12,22 @@ public class UserDataSet extends DataSet {
     @Column
     private int age;
 
+    public UserDataSet() {
+        super();
+    }
+
+    public UserDataSet(long id, String name, int age) {
+        super(id);
+        this.name = name;
+        this.age = age;
+    }
+
+    public UserDataSet(String name, int age) {
+        super();
+        this.name = name;
+        this.age = age;
+    }
+
     public String getName() {
         return name;
     }
@@ -26,5 +42,14 @@ public class UserDataSet extends DataSet {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDataSet{" +
+                "id='" + getId() + '\'' +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                '}';
     }
 }
