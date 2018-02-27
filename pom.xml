@@ -24,7 +24,7 @@
         <module>hw06-atm-emulator</module>
         <module>hw07-atm-department</module>
         <module>hw08-json-writer</module>
-        <module>hw09-jdbc</module>
+        <module>hw09-myorm</module>
         <module>hw14-multithread-sort</module>
     </modules>
 

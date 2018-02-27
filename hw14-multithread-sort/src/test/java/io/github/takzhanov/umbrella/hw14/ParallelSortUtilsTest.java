@@ -4,18 +4,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Random;
 
 public class ParallelSortUtilsTest {
-
-    public static Integer[] generateShuffleArray(int n) {
-        Random random = new Random();
-        Integer[] result = new Integer[n];
-        for (int i = 0; i < n; i++) {
-            result[i] = random.nextInt(1000);
-        }
-        return result;
-    }
 
     public static <T extends Comparable<T>> boolean isSortedBetween(T[] arr, int l, int r) {
         for (int i = l; i < r - 1; i++) {
@@ -31,11 +21,11 @@ public class ParallelSortUtilsTest {
     }
 
     /**
-     * Вероятность моргания теста 1/10! - пойдет
+     * Вероятность моргания теста 1/100! - пойдет
      */
     @Test
     public void helperTest() {
-        Integer[] arr = generateShuffleArray(100);
+        Integer[] arr = ParallelSortUtils.generateShuffleArray(100);
         Assert.assertFalse(isSorted(arr));
         Arrays.sort(arr);
         Assert.assertTrue(isSorted(arr));
@@ -65,12 +55,10 @@ public class ParallelSortUtilsTest {
 
     @Test
     public void parallelSortTest() {
-        final int N = 1000;
+        final int N = 20;
         for (int nThreads = 0; nThreads < 10; nThreads++) {
-            Integer[] arr = generateShuffleArray(N);
-//            System.out.println(Arrays.toString(arr));
-            ParallelSortUtils.parallelSort(nThreads, arr, 0, arr.length);
-//            System.out.println(Arrays.toString(arr));
+            Integer[] arr = ParallelSortUtils.generateShuffleArray(N);
+            ParallelSortUtils.parallelSort(nThreads, arr);
             Assert.assertTrue(isSorted(arr));
         }
     }
