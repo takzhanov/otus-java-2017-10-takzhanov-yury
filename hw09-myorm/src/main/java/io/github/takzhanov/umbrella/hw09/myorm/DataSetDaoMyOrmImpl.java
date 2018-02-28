@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 
-public class DataSetDaoMyOrmImpl implements AutoCloseable {
+public class DataSetDaoMyOrmImpl implements AutoCloseable, DataSetDao {
     private Logger LOGGER = LoggerFactory.getLogger(DataSetDaoMyOrmImpl.class);
     private Connection connection;
 
@@ -18,14 +18,28 @@ public class DataSetDaoMyOrmImpl implements AutoCloseable {
         this.connection = connection;
     }
 
-    public <T extends DataSet> void insert(T dataSet) throws SQLException {
+    @Override
+    public <T extends DataSet> void insert(T dataSet) {
         Executor executor = new Executor(connection);
-        executor.executeUpdate(MyOrmHelper.makeInsertStatement(dataSet));
+        try {
+            executor.executeUpdate(MyOrmHelper.makeInsertStatement(dataSet));
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage(), e.getCause());
+        }
     }
 
-    public <T extends DataSet> T findById(long id, Class<T> clazz) throws SQLException {
+    @Override
+    public <T extends DataSet> T findById(long id, Class<T> clazz) {
         Executor executor = new Executor(connection);
-        List<T> listResult = executor.executeQuery(MyOrmHelper.makeFindByIdStatement(id, clazz), MyOrmHelper.makeResultHandler(clazz));
+        List<T> listResult = null;
+        try {
+            listResult = executor.executeQuery(
+                    MyOrmHelper.makeFindByIdStatement(id, clazz),
+                    MyOrmHelper.makeResultHandler(clazz));
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage(), e.getCause());
+        }
         if (listResult.size() == 0) {
             return null;
         } else if (listResult.size() == 1) {
@@ -35,9 +49,14 @@ public class DataSetDaoMyOrmImpl implements AutoCloseable {
         }
     }
 
-    public <T extends DataSet> List<T> findAll(Class<T> clazz) throws SQLException {
+    @Override
+    public <T extends DataSet> List<T> findAll(Class<T> clazz) {
         Executor executor = new Executor(connection);
-        return executor.executeQuery(MyOrmHelper.makeFindAllStatement(clazz), MyOrmHelper.makeResultHandler(clazz));
+        try {
+            return executor.executeQuery(MyOrmHelper.makeFindAllStatement(clazz), MyOrmHelper.makeResultHandler(clazz));
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage(), e.getCause());
+        }
     }
 
     public void close() {

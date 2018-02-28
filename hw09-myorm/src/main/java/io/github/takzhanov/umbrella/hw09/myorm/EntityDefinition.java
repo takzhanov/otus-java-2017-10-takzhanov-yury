@@ -1,5 +1,6 @@
 package io.github.takzhanov.umbrella.hw09.myorm;
 
+import io.github.takzhanov.umbrella.hw05.ReflectionHelper;
 import io.github.takzhanov.umbrella.hw09.domain.DataSet;
 
 import javax.persistence.Column;
@@ -25,25 +26,23 @@ public class EntityDefinition {
         } else {
             entityDefinition.tableName = tableNameFromAnnotation;
         }
-        Class<?> klass = clazz;
-        while (klass != null && klass != Object.class) {
-            for (Field field : klass.getDeclaredFields()) {
-                if (Modifier.isTransient(field.getModifiers())) {
-                    continue;
-                }
-                String fieldName = field.getName();
-                String columnNameFromAnnotation = field.getAnnotation(Column.class).name();
-                String columnName;
-                if (columnNameFromAnnotation.trim().equals("")) {
-                    columnName = fieldName;
-                } else {
-                    columnName = tableNameFromAnnotation;
-                }
-                entityDefinition.getFieldToColumn().put(field, columnName);
-                entityDefinition.getColumnToField().put(columnName, field);
+
+        for (Field field : ReflectionHelper.getFieldsAnnotatedWith(clazz, Column.class)) {
+            if (Modifier.isTransient(field.getModifiers())) {
+                continue;
             }
-            klass = klass.getSuperclass();
+            String fieldName = field.getName();
+            String columnNameFromAnnotation = field.getAnnotation(Column.class).name();
+            String columnName;
+            if (columnNameFromAnnotation.trim().equals("")) {
+                columnName = fieldName;
+            } else {
+                columnName = tableNameFromAnnotation;
+            }
+            entityDefinition.getFieldToColumn().put(field, columnName);
+            entityDefinition.getColumnToField().put(columnName, field);
         }
+
         return entityDefinition;
     }
 

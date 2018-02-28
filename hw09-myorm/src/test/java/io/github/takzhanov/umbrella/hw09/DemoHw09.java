@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 
-public class Demo {
-    static final Logger LOGGER = LoggerFactory.getLogger(Demo.class);
+public class DemoHw09 {
+    static final Logger LOGGER = LoggerFactory.getLogger(DemoHw09.class);
     private final DbService dbService = new DbServiceMyOrmImpl(ConnectionHelper.getConnection());
 
     @Before

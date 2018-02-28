@@ -124,6 +124,18 @@ public class ReflectionHelper {
         return methods;
     }
 
+    public static List<Field> getFieldsAnnotatedWith(final Class<?> type, final Class<? extends Annotation> annotation) {
+        final List<Field> fields = new ArrayList<>();
+        Class<?> klass = type;
+        while (klass != null && klass != Object.class) {
+            Arrays.stream(klass.getDeclaredFields())
+                    .filter(field -> field.isAnnotationPresent(annotation))
+                    .forEach(fields::add);
+            klass = klass.getSuperclass();
+        }
+        return fields;
+    }
+
     private static Class<?>[] toClasses(Object[] args) {
         return Arrays.stream(args).map(Object::getClass).toArray(Class<?>[]::new);
     }

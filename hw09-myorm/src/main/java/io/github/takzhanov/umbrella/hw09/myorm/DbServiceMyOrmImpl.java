@@ -13,7 +13,7 @@ import java.util.List;
 public class DbServiceMyOrmImpl implements DbService {
     private Logger LOGGER = LoggerFactory.getLogger(DbServiceMyOrmImpl.class);
     private Connection connection;
-    private DataSetDaoMyOrmImpl dao;
+    private DataSetDao dao;
 
     public DbServiceMyOrmImpl(Connection connection) {
         this.connection = connection;

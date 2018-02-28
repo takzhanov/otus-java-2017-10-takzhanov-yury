@@ -1,8 +1,8 @@
 package io.github.takzhanov.umbrella.hw09.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -11,21 +11,29 @@ public class UserDataSet extends DataSet {
     private String name;
     @Column
     private int age;
+    @OneToOne(cascade = CascadeType.ALL)
+    private AddressDataSet address;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<PhoneDataSet> phones = new ArrayList<>();
 
     public UserDataSet() {
-        super();
-    }
-
-    public UserDataSet(long id, String name, int age) {
-        super(id);
-        this.name = name;
-        this.age = age;
     }
 
     public UserDataSet(String name, int age) {
-        super();
         this.name = name;
         this.age = age;
+    }
+
+    public UserDataSet(String name, int age, String address) {
+        this.name = name;
+        this.age = age;
+        this.address = new AddressDataSet(address);
+    }
+
+    public void addPhone(String number) {
+        PhoneDataSet newPhone = new PhoneDataSet(number);
+        newPhone.setUser(this);
+        getPhones().add(newPhone);
     }
 
     public String getName() {
@@ -44,12 +52,30 @@ public class UserDataSet extends DataSet {
         this.age = age;
     }
 
+    public AddressDataSet getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressDataSet address) {
+        this.address = address;
+    }
+
+    public List<PhoneDataSet> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<PhoneDataSet> phones) {
+        this.phones = phones;
+    }
+
     @Override
     public String toString() {
-        return "UserDataSet{" +
-                "id='" + getId() + '\'' +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                '}';
+        final StringBuffer sb = new StringBuffer("UserDataSet{");
+        sb.append("name='").append(name).append('\'');
+        sb.append(", age=").append(age);
+        sb.append(", address=").append(address);
+        sb.append(", phone=").append(phones);
+        sb.append('}');
+        return sb.toString();
     }
 }

@@ -1,4 +1,4 @@
-ДЗ-09: myORM
+**ДЗ-09: myORM**
 Создайте в базе таблицу с полями:
 id bigint(20) NOT NULL auto_increment
 name varchar(255)
@@ -14,7 +14,7 @@ age int(3)
 
 ---
 
-ДЗ-10: Hibernate ORM
+**ДЗ-10: Hibernate ORM**
 На основе предыдущего ДЗ (myORM):
 1. Оформить решение в виде DBService (interface DBService, class DBServiceImpl, UsersDAO, UsersDataSet, Executor)
 2. Не меняя интерфейс DBSerivice сделать DBServiceHibernateImpl на Hibernate.
@@ -32,4 +32,4 @@ private String number;
 4.** Поддержать работу из пункта (3) в myORM
 
 ---
-(2 задания в одном)
+*(2 задания в одном)*
