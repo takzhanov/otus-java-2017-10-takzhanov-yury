@@ -2,15 +2,14 @@ package io.github.takzhanov.umbrella.hw11;
 
 import io.github.takzhanov.umbrella.hw09.common.DbService;
 import io.github.takzhanov.umbrella.hw09.domain.UserDataSet;
+import io.github.takzhanov.umbrella.hw11.cache.CacheEngine;
+import io.github.takzhanov.umbrella.hw11.cache.CacheEngineImpl;
 
-import java.lang.ref.SoftReference;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CachedDbService implements DbService {
     private DbService dbService;
-    Map<Long, SoftReference<UserDataSet>> usersCache = new HashMap<>();
+    private CacheEngine<Long, UserDataSet> usersCache = new CacheEngineImpl<>(10, 1000, 0, false);
 
     public CachedDbService(DbService dbService) {
         this.dbService = dbService;
@@ -38,10 +37,12 @@ public class CachedDbService implements DbService {
 
     @Override
     public UserDataSet loadUser(long id) {
-        return usersCache.computeIfAbsent(id, key -> {
-            UserDataSet userDataSet = dbService.loadUser(key);
-            return new SoftReference<>(userDataSet);
-        }).get();
+        UserDataSet userDataSet = usersCache.get(id);
+        if (userDataSet == null) {
+            userDataSet = dbService.loadUser(id);
+            usersCache.put(id, userDataSet);
+        }
+        return userDataSet;
     }
 
     @Override

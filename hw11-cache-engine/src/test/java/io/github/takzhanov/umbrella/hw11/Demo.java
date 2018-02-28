@@ -11,9 +11,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.SQLException;
-import java.util.Objects;
-
 public class Demo {
     static final Logger LOGGER = LoggerFactory.getLogger(Demo.class);
     private final DbService dbService = new CachedDbService(new DbServiceMyOrmImpl(ConnectionHelper.getConnection()));
@@ -36,14 +33,18 @@ public class Demo {
     }
 
     @Test
-    public void demo() {
+    public void demo() throws InterruptedException {
         for (UserDataSet user : dbService.loadAllUsers()) {
             LOGGER.info(user.toString());
         }
+
         UserDataSet user = dbService.loadUser(1);
         UserDataSet user2 = dbService.loadUser(1);
-        System.out.println(user.hashCode());
-        System.out.println(user2.hashCode());
-        Assert.assertTrue(user == user2);
+        Assert.assertTrue("Кэш не сработал", user == user2);
+
+        Thread.sleep(1500);
+
+        UserDataSet user3 = dbService.loadUser(1);
+        Assert.assertFalse("Кэш не сбросился", user == user3);
     }
 }
