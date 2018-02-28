@@ -11,13 +11,13 @@ public interface DbService extends AutoCloseable {
 
     String getMetaData();
 
-    int prepareTables() throws SQLException;
+    int prepareTables();
 
-    int dropTables() throws SQLException;
+    int dropTables();
 
-    void saveUser(UserDataSet user) throws SQLException;
+    void saveUser(UserDataSet user);
 
-    UserDataSet loadUser(long id) throws SQLException;
+    UserDataSet loadUser(long id);
 
-    List<UserDataSet> loadAllUsers() throws SQLException;
+    List<UserDataSet> loadAllUsers();
 }

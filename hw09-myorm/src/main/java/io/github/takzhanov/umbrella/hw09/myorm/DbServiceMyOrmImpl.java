@@ -44,33 +44,43 @@ public class DbServiceMyOrmImpl implements DbService {
     }
 
     @Override
-    public int prepareTables() throws SQLException {
+    public int prepareTables() {
         Executor executor = new Executor(connection);
-        int result = executor.executeUpdate(CREATE_TABLE_USERS);
-        LOGGER.info("Table created");
+        int result = 0;
+        try {
+            result = executor.executeUpdate(CREATE_TABLE_USERS);
+            LOGGER.info("Table created");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return result;
     }
 
     @Override
-    public int dropTables() throws SQLException {
+    public int dropTables() {
         Executor executor = new Executor(connection);
-        int result = executor.executeUpdate(DROP_TABLE_USERS);
+        int result = 0;
+        try {
+            result = executor.executeUpdate(DROP_TABLE_USERS);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         LOGGER.info("Table dropped");
         return result;
     }
 
     @Override
-    public void saveUser(UserDataSet user) throws SQLException {
+    public void saveUser(UserDataSet user) {
         dao.insert(user);
     }
 
     @Override
-    public UserDataSet loadUser(long id) throws SQLException {
+    public UserDataSet loadUser(long id) {
         return dao.findById(id, UserDataSet.class);
     }
 
     @Override
-    public List<UserDataSet> loadAllUsers() throws SQLException {
+    public List<UserDataSet> loadAllUsers() {
         return dao.findAll(UserDataSet.class);
     }
 }

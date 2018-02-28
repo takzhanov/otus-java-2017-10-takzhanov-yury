@@ -105,17 +105,17 @@ public class DbServiceHibernateImpl implements DbService {
     }
 
     @Override
-    public int prepareTables() throws SQLException {
+    public int prepareTables() {
         return 0;
     }
 
     @Override
-    public int dropTables() throws SQLException {
+    public int dropTables() {
         return 0;
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         shutdown();
     }
 }
