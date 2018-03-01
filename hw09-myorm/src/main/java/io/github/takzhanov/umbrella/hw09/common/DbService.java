@@ -2,7 +2,6 @@ package io.github.takzhanov.umbrella.hw09.common;
 
 import io.github.takzhanov.umbrella.hw09.domain.UserDataSet;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface DbService extends AutoCloseable {

@@ -26,6 +26,7 @@
         <module>hw08-json-writer</module>
         <module>hw09-myorm</module>
         <module>hw11-cache-engine</module>
+        <module>hw13-war-webapp</module>
         <module>hw14-multithread-sort</module>
     </modules>
 
