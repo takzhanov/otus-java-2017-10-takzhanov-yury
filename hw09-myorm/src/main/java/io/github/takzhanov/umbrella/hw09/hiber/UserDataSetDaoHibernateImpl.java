@@ -18,13 +18,14 @@ public class UserDataSetDaoHibernateImpl implements DataSetDao {
         this.session = session;
     }
 
-    public UserDataSet readByName(String name) {
+    @Override
+    public <T extends UserDataSet> List<T> findByName(String name, Class<T> clazz) {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<UserDataSet> criteria = builder.createQuery(UserDataSet.class);
         Root<UserDataSet> from = criteria.from(UserDataSet.class);
         criteria.where(builder.equal(from.get("name"), name));
         Query<UserDataSet> query = session.createQuery(criteria);
-        return query.uniqueResult();
+        return (List<T>) query.getResultList();  //FIXME почему здесь нужен кастинг?
     }
 
     @Override

@@ -2,6 +2,7 @@ package io.github.takzhanov.umbrella.hw09.myorm;
 
 import io.github.takzhanov.umbrella.hw09.common.Executor;
 import io.github.takzhanov.umbrella.hw09.domain.DataSet;
+import io.github.takzhanov.umbrella.hw09.domain.UserDataSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,6 +55,19 @@ public class DataSetDaoMyOrmImpl implements AutoCloseable, DataSetDao {
         Executor executor = new Executor(connection);
         try {
             return executor.executeQuery(MyOrmHelper.makeFindAllStatement(clazz), MyOrmHelper.makeResultHandler(clazz));
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage(), e.getCause());
+        }
+    }
+
+    @Override
+    public <T extends UserDataSet> List<T> findByName(String name, Class<T> clazz) {
+        Executor executor = new Executor(connection);
+        try {
+            return executor.executeQuery(
+                    MyOrmHelper.makeFindByNameStatement(name, clazz),
+                    MyOrmHelper.makeResultHandler(clazz));
+
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage(), e.getCause());
         }

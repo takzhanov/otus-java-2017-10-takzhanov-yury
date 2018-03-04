@@ -83,4 +83,9 @@ public class DbServiceMyOrmImpl implements DbService {
     public List<UserDataSet> loadAllUsers() {
         return dao.findAll(UserDataSet.class);
     }
+
+    @Override
+    public List<UserDataSet> findUserByName(String name) {
+        return dao.findByName(name, UserDataSet.class);
+    }
 }

@@ -15,6 +15,11 @@ public class CachedDbService implements DbService {
         this.dbService = dbService;
     }
 
+    public CachedDbService(DbService dbService, CacheEngine<Long, UserDataSet> usersCache) {
+        this.dbService = dbService;
+        this.usersCache = usersCache;
+    }
+
     @Override
     public String getMetaData() {
         return dbService.getMetaData();
@@ -45,9 +50,15 @@ public class CachedDbService implements DbService {
         return userDataSet;
     }
 
+
     @Override
     public List<UserDataSet> loadAllUsers() {
         return dbService.loadAllUsers();
+    }
+
+    @Override
+    public List<UserDataSet> findUserByName(String name) {
+        return dbService.findUserByName(name);
     }
 
     @Override

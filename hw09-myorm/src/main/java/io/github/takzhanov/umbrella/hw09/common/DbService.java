@@ -19,4 +19,14 @@ public interface DbService extends AutoCloseable {
     UserDataSet loadUser(long id);
 
     List<UserDataSet> loadAllUsers();
+
+    List<UserDataSet> findUserByName(String name);
+
+    default UserDataSet checkCredentials(String username, String password) {
+        List<UserDataSet> users = findUserByName(username);
+        if (!users.isEmpty()) {
+            return users.get(0);
+        }
+        return null;
+    }
 }

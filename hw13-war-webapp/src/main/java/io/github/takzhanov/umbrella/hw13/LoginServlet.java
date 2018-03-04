@@ -28,14 +28,6 @@ public class LoginServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-        dbService.prepareTables();
-        dbService.saveUser(new UserDataSet("jorj", 33));
-    }
-
-    @Override
-    public void destroy() {
-        dbService.dropTables();
-        super.destroy();
     }
 
     @Override
@@ -58,7 +50,7 @@ public class LoginServlet extends HttpServlet {
         }
 
         if (messages.isEmpty()) {
-            UserDataSet user = dbService.loadUser(1);
+            UserDataSet user = dbService.checkCredentials(username, password);
 
             if (user != null) {
                 request.getSession().setAttribute("user", user);
@@ -70,7 +62,6 @@ public class LoginServlet extends HttpServlet {
         }
 
         request.setAttribute("messages", messages);
-        response.sendRedirect("login");
-
+        request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
     }
 }

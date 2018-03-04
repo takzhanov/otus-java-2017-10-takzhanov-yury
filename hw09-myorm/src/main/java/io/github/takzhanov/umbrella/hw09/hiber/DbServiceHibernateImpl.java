@@ -70,18 +70,19 @@ public class DbServiceHibernateImpl implements DbService {
         });
     }
 
-    public UserDataSet readByName(String name) {
-        return runInSession(session -> {
-            UserDataSetDaoHibernateImpl dao = new UserDataSetDaoHibernateImpl(session);
-            return dao.readByName(name);
-        });
-    }
-
     @Override
     public List<UserDataSet> loadAllUsers() {
         return runInSession(session -> {
             UserDataSetDaoHibernateImpl dao = new UserDataSetDaoHibernateImpl(session);
             return dao.findAll(UserDataSet.class);
+        });
+    }
+
+    @Override
+    public List<UserDataSet> findUserByName(String name) {
+        return runInSession(session -> {
+            UserDataSetDaoHibernateImpl dao = new UserDataSetDaoHibernateImpl(session);
+            return dao.findByName(name, UserDataSet.class);
         });
     }
 

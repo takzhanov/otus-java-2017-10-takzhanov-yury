@@ -3,6 +3,7 @@ package io.github.takzhanov.umbrella.hw09.myorm;
 import io.github.takzhanov.umbrella.hw05.ReflectionHelper;
 import io.github.takzhanov.umbrella.hw09.common.ResultHandler;
 import io.github.takzhanov.umbrella.hw09.domain.DataSet;
+import io.github.takzhanov.umbrella.hw09.domain.UserDataSet;
 
 import javax.persistence.Id;
 import java.lang.reflect.Field;
@@ -52,6 +53,20 @@ public class MyOrmHelper {
                 definition.getTableName(),
                 idColumn,
                 id);
+    }
+
+    public static <T extends UserDataSet> String makeFindByNameStatement(String name, Class<T> clazz) {
+        EntityDefinition definition = getEntityDefinition(clazz);
+        String nameColumn = "name";
+        try {
+            nameColumn = definition.getFieldToColumn().get(UserDataSet.class.getDeclaredField("name"));
+        } catch (NoSuchFieldException ignored) {
+        }
+        return String.format("select %s from %s where %s='%s'",
+                String.join(",", definition.getColumnToField().keySet()),
+                definition.getTableName(),
+                nameColumn,
+                name);
     }
 
     public static <T extends DataSet> String makeFindAllStatement(Class<T> clazz) {
