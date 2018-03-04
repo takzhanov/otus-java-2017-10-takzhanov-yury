@@ -71,7 +71,8 @@ public class UserDataSet extends DataSet {
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("UserDataSet{");
-        sb.append("name='").append(name).append('\'');
+        sb.append("id='").append(getId()).append('\'');
+        sb.append(", name='").append(name).append('\'');
         sb.append(", age=").append(age);
         sb.append(", address=").append(address);
         sb.append(", phone=").append(phones);

@@ -57,7 +57,7 @@ public class DbServiceHibernateImpl implements DbService {
     @Override
     public void saveUser(UserDataSet dataSet) {
         try (Session session = sessionFactory.openSession()) {
-            UserDataSetDaoHibernateImpl dao = new UserDataSetDaoHibernateImpl(session);
+            DataSetDaoHibernateImpl dao = new DataSetDaoHibernateImpl(session);
             dao.insert(dataSet);
         }
     }
@@ -65,7 +65,7 @@ public class DbServiceHibernateImpl implements DbService {
     @Override
     public UserDataSet loadUser(long id) {
         return runInSession(session -> {
-            UserDataSetDaoHibernateImpl dao = new UserDataSetDaoHibernateImpl(session);
+            DataSetDaoHibernateImpl dao = new DataSetDaoHibernateImpl(session);
             return dao.findById(id, UserDataSet.class);
         });
     }
@@ -73,7 +73,7 @@ public class DbServiceHibernateImpl implements DbService {
     @Override
     public List<UserDataSet> loadAllUsers() {
         return runInSession(session -> {
-            UserDataSetDaoHibernateImpl dao = new UserDataSetDaoHibernateImpl(session);
+            DataSetDaoHibernateImpl dao = new DataSetDaoHibernateImpl(session);
             return dao.findAll(UserDataSet.class);
         });
     }
@@ -81,7 +81,7 @@ public class DbServiceHibernateImpl implements DbService {
     @Override
     public List<UserDataSet> findUserByName(String name) {
         return runInSession(session -> {
-            UserDataSetDaoHibernateImpl dao = new UserDataSetDaoHibernateImpl(session);
+            DataSetDaoHibernateImpl dao = new DataSetDaoHibernateImpl(session);
             return dao.findByName(name, UserDataSet.class);
         });
     }
@@ -105,13 +105,11 @@ public class DbServiceHibernateImpl implements DbService {
     }
 
     @Override
-    public int prepareTables() {
-        return 0;
+    public void prepareTables() {
     }
 
     @Override
-    public int dropTables() {
-        return 0;
+    public void dropTables() {
     }
 
     @Override

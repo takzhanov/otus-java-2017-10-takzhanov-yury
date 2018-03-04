@@ -1,4 +1,4 @@
-package io.github.takzhanov.umbrella.hw09.myorm;
+package io.github.takzhanov.umbrella.hw09.common;
 
 import io.github.takzhanov.umbrella.hw09.domain.DataSet;
 import io.github.takzhanov.umbrella.hw09.domain.UserDataSet;

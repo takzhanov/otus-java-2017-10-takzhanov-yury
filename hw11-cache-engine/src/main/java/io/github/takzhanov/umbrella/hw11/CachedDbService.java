@@ -26,18 +26,21 @@ public class CachedDbService implements DbService {
     }
 
     @Override
-    public int prepareTables() {
-        return dbService.prepareTables();
+    public void prepareTables() {
+        dbService.prepareTables();
     }
 
     @Override
-    public int dropTables() {
-        return dbService.dropTables();
+    public void dropTables() {
+        dbService.dropTables();
     }
 
     @Override
     public void saveUser(UserDataSet user) {
         dbService.saveUser(user);
+        if (user.getId() != 0) {
+            usersCache.put(user.getId(), user);
+        }
     }
 
     @Override
@@ -53,7 +56,11 @@ public class CachedDbService implements DbService {
 
     @Override
     public List<UserDataSet> loadAllUsers() {
-        return dbService.loadAllUsers();
+        List<UserDataSet> users = dbService.loadAllUsers();
+        for (UserDataSet user : users) {
+            usersCache.put(user.getId(), user);
+        }
+        return users;
     }
 
     @Override

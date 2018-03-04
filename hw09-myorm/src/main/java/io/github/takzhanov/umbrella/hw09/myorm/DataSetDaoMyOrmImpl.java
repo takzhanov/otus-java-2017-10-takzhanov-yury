@@ -1,5 +1,6 @@
 package io.github.takzhanov.umbrella.hw09.myorm;
 
+import io.github.takzhanov.umbrella.hw09.common.DataSetDao;
 import io.github.takzhanov.umbrella.hw09.common.Executor;
 import io.github.takzhanov.umbrella.hw09.domain.DataSet;
 import io.github.takzhanov.umbrella.hw09.domain.UserDataSet;
@@ -23,7 +24,14 @@ public class DataSetDaoMyOrmImpl implements AutoCloseable, DataSetDao {
     public <T extends DataSet> void insert(T dataSet) {
         Executor executor = new Executor(connection);
         try {
-            executor.executeUpdate(MyOrmHelper.makeInsertStatement(dataSet));
+            executor.executeUpdate(MyOrmHelper.makeInsertStatement(dataSet), generatedKeys -> {
+                if (generatedKeys.next()) {
+                    dataSet.setId(generatedKeys.getLong(1));
+                } else {
+                    throw new SQLException("Creating failed, no ID obtained.");
+                }
+                return null;
+            });
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage(), e.getCause());
         }

@@ -1,5 +1,6 @@
 package io.github.takzhanov.umbrella.hw09.myorm;
 
+import io.github.takzhanov.umbrella.hw09.common.DataSetDao;
 import io.github.takzhanov.umbrella.hw09.common.DbService;
 import io.github.takzhanov.umbrella.hw09.common.Executor;
 import io.github.takzhanov.umbrella.hw09.domain.UserDataSet;
@@ -11,6 +12,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class DbServiceMyOrmImpl implements DbService {
+    public static final String CREATE_TABLE_USERS = "create table if not exists users (id bigserial , name varchar(256), age smallint, primary key (id))";
+    public static final String DROP_TABLE_USERS = "drop table if exists users";
     private Logger LOGGER = LoggerFactory.getLogger(DbServiceMyOrmImpl.class);
     private Connection connection;
     private DataSetDao dao;
@@ -44,29 +47,25 @@ public class DbServiceMyOrmImpl implements DbService {
     }
 
     @Override
-    public int prepareTables() {
+    public void prepareTables() {
         Executor executor = new Executor(connection);
-        int result = 0;
         try {
-            result = executor.executeUpdate(CREATE_TABLE_USERS);
+            executor.executeUpdate(CREATE_TABLE_USERS);
             LOGGER.info("Table created");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return result;
     }
 
     @Override
-    public int dropTables() {
+    public void dropTables() {
         Executor executor = new Executor(connection);
-        int result = 0;
         try {
-            result = executor.executeUpdate(DROP_TABLE_USERS);
+            executor.executeUpdate(DROP_TABLE_USERS);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         LOGGER.info("Table dropped");
-        return result;
     }
 
     @Override

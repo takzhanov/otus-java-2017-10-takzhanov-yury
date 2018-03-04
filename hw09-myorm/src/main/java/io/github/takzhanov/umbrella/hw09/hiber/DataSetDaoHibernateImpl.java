@@ -1,8 +1,8 @@
 package io.github.takzhanov.umbrella.hw09.hiber;
 
+import io.github.takzhanov.umbrella.hw09.common.DataSetDao;
 import io.github.takzhanov.umbrella.hw09.domain.DataSet;
 import io.github.takzhanov.umbrella.hw09.domain.UserDataSet;
-import io.github.takzhanov.umbrella.hw09.myorm.DataSetDao;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -11,10 +11,10 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
-public class UserDataSetDaoHibernateImpl implements DataSetDao {
+public class DataSetDaoHibernateImpl implements DataSetDao {
     private Session session;
 
-    public UserDataSetDaoHibernateImpl(Session session) {
+    public DataSetDaoHibernateImpl(Session session) {
         this.session = session;
     }
 

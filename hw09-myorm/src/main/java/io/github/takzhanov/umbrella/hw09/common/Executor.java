@@ -24,8 +24,9 @@ public class Executor {
     public <T> T executeQuery(String sql, ResultHandler<T> resultHandler) throws SQLException {
         try (Statement statement = connection.createStatement()) {
             LOGGER.info(sql);
-            ResultSet resultSet = statement.executeQuery(sql);
-            return resultHandler.handle(resultSet);
+            try (ResultSet resultSet = statement.executeQuery(sql)) {
+                return resultHandler.handle(resultSet);
+            }
         }
     }
 
@@ -33,6 +34,22 @@ public class Executor {
         try (Statement statement = connection.createStatement()) {
             LOGGER.info(sql);
             return statement.executeUpdate(sql);
+        }
+    }
+
+    public int executeUpdate(String sql, ResultHandler<?> generatedKeysHandler)
+            throws SQLException {
+
+        try (Statement statement = connection.createStatement()) {
+            LOGGER.info(sql);
+            int affectedRows = statement.executeUpdate(sql);
+            if (affectedRows == 0) {
+                throw new SQLException("Creating failed, no rows affected.");
+            }
+            try (ResultSet resultSet = statement.getGeneratedKeys()) {
+                generatedKeysHandler.handle(resultSet);
+            }
+            return affectedRows;
         }
     }
 }
