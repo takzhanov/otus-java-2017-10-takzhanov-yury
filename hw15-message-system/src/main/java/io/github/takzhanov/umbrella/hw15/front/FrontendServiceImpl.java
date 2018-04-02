@@ -1,13 +1,16 @@
 package io.github.takzhanov.umbrella.hw15.front;
 
 import io.github.takzhanov.umbrella.hw15.app.FrontendService;
+import io.github.takzhanov.umbrella.hw15.app.Listener;
 import io.github.takzhanov.umbrella.hw15.app.MessageSystemContext;
 import io.github.takzhanov.umbrella.hw15.db.MsgGetUserId;
 import io.github.takzhanov.umbrella.hw15.ms.Address;
 import io.github.takzhanov.umbrella.hw15.ms.Message;
 import io.github.takzhanov.umbrella.hw15.ms.MessageSystem;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FrontendServiceImpl implements FrontendService {
@@ -15,6 +18,7 @@ public class FrontendServiceImpl implements FrontendService {
     private final MessageSystemContext context;
 
     private final Map<Integer, String> users = new HashMap<>();
+    private final List<Listener> listeners = new ArrayList<>();
 
     public FrontendServiceImpl(MessageSystemContext context, Address address) {
         this.context = context;
@@ -46,5 +50,15 @@ public class FrontendServiceImpl implements FrontendService {
     @Override
     public MessageSystem getMS() {
         return context.getMessageSystem();
+    }
+
+    @Override
+    public void addListener(Listener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void removeListener(Listener listener) {
+        listeners.remove(listener);
     }
 }

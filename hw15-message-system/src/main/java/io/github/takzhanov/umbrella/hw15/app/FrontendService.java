@@ -8,5 +8,9 @@ public interface FrontendService extends Addressee {
     void handleRequest(String login);
 
     void addUser(int id, String name);
+
+    void addListener(Listener listener);
+
+    void removeListener(Listener listener);
 }
 

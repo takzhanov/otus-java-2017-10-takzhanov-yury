@@ -1,5 +1,7 @@
-package io.github.takzhanov.umbrella.hw15.main.log;
+package io.github.takzhanov.umbrella.hw15.app.web;
 
+import io.github.takzhanov.umbrella.hw15.app.FrontendService;
+import io.github.takzhanov.umbrella.hw15.app.Listener;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -9,11 +11,13 @@ import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import java.util.Set;
 
 @WebSocket
-public class LogWebSocket {
+public class LogWebSocket implements Listener {
+    private final FrontendService frontendService;
     private Set<LogWebSocket> users;
     private Session session;
 
-    public LogWebSocket(Set<LogWebSocket> users) {
+    public LogWebSocket(FrontendService frontendService, Set<LogWebSocket> users) {
+        this.frontendService = frontendService;
         this.users = users;
     }
 
@@ -31,6 +35,7 @@ public class LogWebSocket {
 
     @OnWebSocketConnect
     public void onOpen(Session session) {
+        frontendService.addListener(this);
         users.add(this);
         setSession(session);
         System.out.println("onOpen");
@@ -46,7 +51,13 @@ public class LogWebSocket {
 
     @OnWebSocketClose
     public void onClose(int statusCode, String reason) {
+        frontendService.removeListener(this);
         users.remove(this);
         System.out.println("onClose");
+    }
+
+    @Override
+    public void onUpdate() {
+        System.out.println("Listener: event from FE ...");
     }
 }

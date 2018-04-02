@@ -4,14 +4,14 @@ import io.github.takzhanov.umbrella.hw09.domain.UserDataSet;
 import io.github.takzhanov.umbrella.hw11.cache.CacheEngine;
 import io.github.takzhanov.umbrella.hw11.cache.CacheEngineImpl;
 import io.github.takzhanov.umbrella.hw12.AuthFilter;
-import io.github.takzhanov.umbrella.hw12.HomeServlet;
 import io.github.takzhanov.umbrella.hw12.LoginServlet;
 import io.github.takzhanov.umbrella.hw15.app.DbService;
 import io.github.takzhanov.umbrella.hw15.app.FrontendService;
 import io.github.takzhanov.umbrella.hw15.app.MessageSystemContext;
+import io.github.takzhanov.umbrella.hw15.app.web.InfoServlet;
 import io.github.takzhanov.umbrella.hw15.db.DbServiceImpl;
 import io.github.takzhanov.umbrella.hw15.front.FrontendServiceImpl;
-import io.github.takzhanov.umbrella.hw15.main.log.LogServlet;
+import io.github.takzhanov.umbrella.hw15.app.web.LogWsServlet;
 import io.github.takzhanov.umbrella.hw15.ms.Address;
 import io.github.takzhanov.umbrella.hw15.ms.MessageSystem;
 import org.eclipse.jetty.server.Server;
@@ -57,13 +57,14 @@ public class Main {
         Resource resource = Resource.newClassPathResource(PUBLIC_HTML);
         resourceHandler.setBaseResource(resource);
 
-
         ServletContextHandler webContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
         webContext.setContextPath("/AdminWebapp");
+        //фильтр и логин работают по-старому
         webContext.addFilter(new FilterHolder(new AuthFilter()), "/*", EnumSet.allOf(DispatcherType.class));
         webContext.addServlet(new ServletHolder(new LoginServlet(dbService)), "/login");
-        webContext.addServlet(new ServletHolder(new HomeServlet(dbService, cacheInfo)), "/home");
-        webContext.addServlet(new ServletHolder(new LogServlet()), "/log");
+        //все остальное общается с системой через Frontend
+        webContext.addServlet(new ServletHolder(new InfoServlet(frontendService)), "/home");
+        webContext.addServlet(new ServletHolder(new LogWsServlet(frontendService)), "/log");
 
         Server server = new Server(8080);
         server.setHandler(new HandlerList(resourceHandler, webContext));
