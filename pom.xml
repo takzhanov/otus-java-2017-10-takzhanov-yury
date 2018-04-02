@@ -29,6 +29,8 @@
         <module>hw12-embedded-webapp</module>
         <module>hw13-war-webapp</module>
         <module>hw14-multithread-sort</module>
+        <module>hw15-message-system</module>
+        <module>hw16-message-server</module>
     </modules>
 
     <properties>

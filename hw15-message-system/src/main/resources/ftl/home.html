@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/js/wschat.js"></script>
+</head>
+<body onload="init();">
+
+Parameters:
+<table>
+    <tr>
+        <td>MetaData</td>
+        <td>${metadata}</td>
+    </tr>
+    <tr>
+        <td>Cache Hit</td>
+        <td>${hit}</td>
+    </tr>
+    <tr>
+        <td>Cache Miss</td>
+        <td>${miss}</td>
+    </tr>
+</table>
+
+Buttons
+
+Chat:
+<div id="body">
+    <div id="menu">
+        <p class="welcome">
+            Welcome,<input id="username" value="${username!'anonymous'}"/>
+        </p>
+
+        <div style="clear: both"></div>
+    </div>
+
+    <div id="chatbox">
+        <textarea id="messages" rows="16" cols="48" readonly="readonly"></textarea>
+    </div>
+
+    <form name="message" action="">
+        <input name="usermsg" type="text" id="message" size="63"/>
+        <input type="button" name="submitmsg" value="Send..." onclick="sendMessage();"/>
+    </form>
+</div>
+
+</body>
+</html>
