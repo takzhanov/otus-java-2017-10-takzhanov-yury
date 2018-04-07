@@ -9,13 +9,13 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
 
-public class PageGenerator {
-    private static final String TML_DIR = "/ftl/";
-    public static final PageGenerator INSTANCE = new PageGenerator();
+public enum PageGenerator {
+    INSTANCE;
 
+    private static final String TML_DIR = "/ftl/";
     private final Configuration cfg;
 
-    private PageGenerator() {
+    PageGenerator() {
         cfg = new Configuration(Configuration.VERSION_2_3_23);
         cfg.setClassForTemplateLoading(this.getClass(), TML_DIR);
     }

@@ -5,24 +5,6 @@
 </head>
 <body onload="init();">
 
-Parameters:
-<table>
-    <tr>
-        <td>MetaData</td>
-        <td>${metadata}</td>
-    </tr>
-    <tr>
-        <td>Cache Hit</td>
-        <td>${hit}</td>
-    </tr>
-    <tr>
-        <td>Cache Miss</td>
-        <td>${miss}</td>
-    </tr>
-</table>
-
-Buttons
-
 Chat:
 <div id="body">
     <div id="menu">
@@ -37,10 +19,13 @@ Chat:
         <textarea id="messages" rows="16" cols="48" readonly="readonly"></textarea>
     </div>
 
-    <form name="message" action="">
+    <form name="message" action="" onsubmit="sendTextMessage(); return false;">
         <input name="usermsg" type="text" id="message" size="63"/>
-        <input type="button" name="submitmsg" value="Send..." onclick="sendMessage();"/>
+        <input type="button" name="submitmsg" value="Send..." onclick="sendTextMessage();"/>
     </form>
+
+    <input type="button" value="Get system info..." onclick="sendCommonMessage('sysinfo', '');"/>
+    <input type="button" value="Show user info..." onclick="sendCommonMessage('userinfo', '');"/>
 </div>
 
 </body>

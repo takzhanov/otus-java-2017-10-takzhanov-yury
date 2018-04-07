@@ -1,5 +1,7 @@
 package io.github.takzhanov.umbrella.hw15.app.web;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.github.takzhanov.umbrella.hw15.app.FrontendService;
 import io.github.takzhanov.umbrella.hw15.app.Listener;
 import org.eclipse.jetty.websocket.api.Session;
@@ -8,6 +10,7 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
+import java.io.IOException;
 import java.util.Set;
 
 @WebSocket
@@ -15,20 +18,32 @@ public class LogWebSocket implements Listener {
     private final FrontendService frontendService;
     private Set<LogWebSocket> users;
     private Session session;
+    private String username;
 
-    public LogWebSocket(FrontendService frontendService, Set<LogWebSocket> users) {
+    public LogWebSocket(FrontendService frontendService, Set<LogWebSocket> users, String username) {
         this.frontendService = frontendService;
         this.users = users;
+        this.username = username;
     }
 
     @OnWebSocketMessage
     public void onMessage(String data) {
-        for (LogWebSocket user : users) {
-            try {
-                user.getSession().getRemote().sendString(data);
-                System.out.println("Sending message: " + data);
-            } catch (Exception e) {
-                System.out.print(e.toString());
+        Gson gson = new GsonBuilder().create();
+        ProtocolMessage protocolMessage = gson.fromJson(data, ProtocolMessage.class);
+        System.out.println(protocolMessage);
+
+        if ("sysinfo".equals(protocolMessage.getCommand())) {
+            frontendService.showSysInfo(this);
+        } else if ("userinfo".equals(protocolMessage.getCommand())) {
+            frontendService.showUserInfo(this, username);
+        } else {
+            for (LogWebSocket user : users) {
+                try {
+                    user.getSession().getRemote().sendString(protocolMessage.getText());
+                    System.out.println("Sending message: " + protocolMessage.getText());
+                } catch (Exception e) {
+                    System.out.print(e.toString());
+                }
             }
         }
     }
@@ -57,7 +72,11 @@ public class LogWebSocket implements Listener {
     }
 
     @Override
-    public void onUpdate() {
-        System.out.println("Listener: event from FE ...");
+    public void onFrontendUpdate(String msg) {
+        try {
+            session.getRemote().sendString("Frontend: " + msg);
+        } catch (IOException e) {
+            System.out.println(e.toString());
+        }
     }
 }

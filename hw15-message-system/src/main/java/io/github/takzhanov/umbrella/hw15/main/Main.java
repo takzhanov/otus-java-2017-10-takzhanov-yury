@@ -1,17 +1,15 @@
 package io.github.takzhanov.umbrella.hw15.main;
 
 import io.github.takzhanov.umbrella.hw09.domain.UserDataSet;
-import io.github.takzhanov.umbrella.hw11.cache.CacheEngine;
-import io.github.takzhanov.umbrella.hw11.cache.CacheEngineImpl;
 import io.github.takzhanov.umbrella.hw12.AuthFilter;
 import io.github.takzhanov.umbrella.hw12.LoginServlet;
 import io.github.takzhanov.umbrella.hw15.app.DbService;
 import io.github.takzhanov.umbrella.hw15.app.FrontendService;
 import io.github.takzhanov.umbrella.hw15.app.MessageSystemContext;
 import io.github.takzhanov.umbrella.hw15.app.web.InfoServlet;
+import io.github.takzhanov.umbrella.hw15.app.web.LogWebSocketServlet;
 import io.github.takzhanov.umbrella.hw15.db.DbServiceImpl;
 import io.github.takzhanov.umbrella.hw15.front.FrontendServiceImpl;
-import io.github.takzhanov.umbrella.hw15.app.web.LogWsServlet;
 import io.github.takzhanov.umbrella.hw15.ms.Address;
 import io.github.takzhanov.umbrella.hw15.ms.MessageSystem;
 import org.eclipse.jetty.server.Server;
@@ -42,16 +40,9 @@ public class Main {
 
         DbService dbService = new DbServiceImpl(context, dbAddress);
         dbService.init();
-        CacheEngine<Long, UserDataSet> cacheInfo = new CacheEngineImpl<>(7, 10000, 0, false);
+        prepareTestData(dbService);
 
         messageSystem.start();
-
-        //for test
-        frontendService.handleRequest("tully");
-        frontendService.handleRequest("sully");
-
-        frontendService.handleRequest("tully");
-        frontendService.handleRequest("sully");
 
         ResourceHandler resourceHandler = new ResourceHandler();
         Resource resource = Resource.newClassPathResource(PUBLIC_HTML);
@@ -62,9 +53,9 @@ public class Main {
         //фильтр и логин работают по-старому
         webContext.addFilter(new FilterHolder(new AuthFilter()), "/*", EnumSet.allOf(DispatcherType.class));
         webContext.addServlet(new ServletHolder(new LoginServlet(dbService)), "/login");
+        webContext.addServlet(new ServletHolder(new InfoServlet()), "/home");
         //все остальное общается с системой через Frontend
-        webContext.addServlet(new ServletHolder(new InfoServlet(frontendService)), "/home");
-        webContext.addServlet(new ServletHolder(new LogWsServlet(frontendService)), "/log");
+        webContext.addServlet(new ServletHolder(new LogWebSocketServlet(frontendService)), "/log");
 
         Server server = new Server(8080);
         server.setHandler(new HandlerList(resourceHandler, webContext));
@@ -73,6 +64,14 @@ public class Main {
 
         Thread.sleep(1000);
         messageSystem.dispose();
+    }
+
+    private static void prepareTestData(DbService dbService) {
+        dbService.dropTables();
+        dbService.prepareTables();
+        dbService.saveUser(new UserDataSet("root", 20));
+        dbService.saveUser(new UserDataSet("jorj", 21));
+        dbService.saveUser(new UserDataSet("alex", 22));
     }
 
 }

@@ -32,9 +32,4 @@ public class DbServiceImpl extends DbServiceMyOrmImpl implements DbService {
         return context.getMessageSystem();
     }
 
-    @Override
-    public int getUserId(String name) {
-        //todo: load id from db
-        return name.hashCode();
-    }
 }

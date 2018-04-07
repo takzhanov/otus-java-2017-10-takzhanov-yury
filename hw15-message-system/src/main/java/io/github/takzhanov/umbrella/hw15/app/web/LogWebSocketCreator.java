@@ -1,5 +1,6 @@
 package io.github.takzhanov.umbrella.hw15.app.web;
 
+import io.github.takzhanov.umbrella.hw09.domain.UserDataSet;
 import io.github.takzhanov.umbrella.hw15.app.FrontendService;
 import org.eclipse.jetty.websocket.servlet.ServletUpgradeRequest;
 import org.eclipse.jetty.websocket.servlet.ServletUpgradeResponse;
@@ -22,8 +23,9 @@ public class LogWebSocketCreator implements WebSocketCreator {
 
     @Override
     public Object createWebSocket(ServletUpgradeRequest req, ServletUpgradeResponse resp) {
-        LogWebSocket socket = new LogWebSocket(frontendService, users);
-        System.out.println("Socket created");
+        UserDataSet userDataSet = (UserDataSet) req.getSession().getAttribute("user");
+        LogWebSocket socket = new LogWebSocket(frontendService, users, userDataSet.getName());
+        System.out.println("WebSocket created");
         return socket;
     }
 }

@@ -5,12 +5,14 @@ import io.github.takzhanov.umbrella.hw15.ms.Addressee;
 public interface FrontendService extends Addressee {
     void init();
 
-    void handleRequest(String login);
-
-    void addUser(int id, String name);
-
     void addListener(Listener listener);
 
     void removeListener(Listener listener);
+
+    void sayAll(String msg);
+
+    void showSysInfo(final Listener source);
+
+    void showUserInfo(Listener source, String username);
 }
 
